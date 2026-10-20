@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ dealership_name }}{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a href="{{ url_for('main.home') }}" class="site-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="{{ dealership_name }}">
+            </a>
+            <nav class="site-nav">
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+                <ul id="navList">
+                    <li><a href="{{ url_for('main.home') }}" class="{{ 'is-active' if request.endpoint == 'main.home' else '' }}">Home</a></li>
+                    <li><a href="{{ url_for('main.inventory') }}" class="{{ 'is-active' if request.endpoint in ('main.inventory', 'main.vehicle_detail') else '' }}">Inventory</a></li>
+                    <li><a href="{{ url_for('main.financing') }}" class="{{ 'is-active' if request.endpoint == 'main.financing' else '' }}">Financing</a></li>
+                    <li><a href="{{ url_for('main.contact') }}" class="{{ 'is-active' if request.endpoint == 'main.contact' else '' }}">Contact</a></li>
+                    {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('dealer.dashboard') }}" class="{{ 'is-active' if request.endpoint and request.endpoint.startswith('dealer.') else '' }}">Dealer Portal</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="quick-nav">
+        <div class="quick-nav__inner">
+            <a href="{{ url_for('main.inventory') }}" class="quick-nav__tab {{ 'is-active' if request.endpoint == 'main.inventory' and not request.args.get('body_style') else '' }}">Search Vehicles</a>
+            <a href="{{ url_for('main.inventory', body_style='Truck') }}" class="quick-nav__tab {{ 'is-active' if request.args.get('body_style') == 'Truck' else '' }}">Shop Trucks</a>
+            <a href="{{ url_for('main.financing') }}" class="quick-nav__tab {{ 'is-active' if request.endpoint == 'main.financing' else '' }}">Get Approved</a>
+            <a href="{{ url_for('main.contact') }}" class="quick-nav__tab {{ 'is-active' if request.endpoint == 'main.contact' else '' }}">Contact Us</a>
+        </div>
+    </nav>
+
+    {% block precontent %}{% endblock %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="page-flash">
+          {% for category, message in messages %}
+            <div class="{{ 'form-success' if category == 'success' else 'form-error' }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <p class="wordmark wordmark--small">{{ dealership_name }}</p>
+            <p>&copy; {{ current_year }} {{ dealership_name }}. All vehicles subject to prior sale.</p>
+            {% if current_user.is_authenticated %}
+              <a href="{{ url_for('dealer.dashboard') }}" class="footer-admin-link">Dealer dashboard</a>
+              &middot;
+              <a href="{{ url_for('dealer.logout') }}" class="footer-admin-link">Log out</a>
+            {% else %}
+              <a href="{{ url_for('dealer.login') }}" class="footer-admin-link">Dealer login</a>
+            {% endif %}
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

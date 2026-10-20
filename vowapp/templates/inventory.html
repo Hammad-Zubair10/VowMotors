@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Inventory · {{ dealership_name }}{% endblock %}
+
+{% block content %}
+<div class="section-head">
+    <h2>Full inventory</h2>
+</div>
+<form class="filter-bar" method="get">
+    <select name="body_style">
+        <option value="">Any type</option>
+        {% for style in body_styles %}
+        <option value="{{ style }}" {{ 'selected' if filters.get('body_style') == style else '' }}>{{ style }}</option>
+        {% endfor %}
+    </select>
+    <select name="make">
+        <option value="">Any make</option>
+        {% for m in makes %}
+        <option value="{{ m }}" {{ 'selected' if filters.get('make') == m else '' }}>{{ m }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="model" placeholder="Model" value="{{ filters.get('model', '') }}">
+    <input type="text" name="keyword" placeholder="Keyword" value="{{ filters.get('keyword', '') }}">
+    <input type="number" name="min_price" placeholder="Min price" value="{{ filters.get('min_price', '') }}">
+    <input type="number" name="max_price" placeholder="Max price" value="{{ filters.get('max_price', '') }}">
+    <select name="sort">
+        <option value="newest" {{ 'selected' if filters.get('sort', 'newest') == 'newest' else '' }}>Newest</option>
+        <option value="price_low" {{ 'selected' if filters.get('sort') == 'price_low' else '' }}>Price: low to high</option>
+        <option value="price_high" {{ 'selected' if filters.get('sort') == 'price_high' else '' }}>Price: high to low</option>
+        <option value="mileage" {{ 'selected' if filters.get('sort') == 'mileage' else '' }}>Mileage: low to high</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<p class="results-count">{{ vehicles|length }} vehicle{{ 's' if vehicles|length != 1 else '' }} found</p>
+
+{% if not vehicles %}
+<div class="empty-state"><p>No vehicles match your search. Try widening your filters.</p></div>
+{% else %}
+<div class="inventory-grid">
+    {% for v in vehicles %}
+        {% include 'partials/vehicle_card.html' %}
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

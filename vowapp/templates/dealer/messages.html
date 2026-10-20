@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Messages · {{ dealership_name }}{% endblock %}
+
+{% block content %}
+<div class="admin-shell">
+    <div class="admin-topbar">
+        <h1 class="wordmark">Contact &amp; financing submissions</h1>
+        <a href="{{ url_for('dealer.dashboard') }}" class="btn btn-ghost">&larr; Back to dashboard</a>
+    </div>
+
+    <div class="section-head"><h2>Contact messages</h2></div>
+    {% if not contacts %}
+    <p>No contact messages yet.</p>
+    {% else %}
+    <table class="admin-table">
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Subject</th><th>Message</th><th>Received</th></tr></thead>
+        <tbody>
+        {% for c in contacts %}
+            <tr>
+                <td>{{ c.name }}</td>
+                <td>{{ c.email }}</td>
+                <td>{{ c.phone or '—' }}</td>
+                <td>{{ c.subject or '—' }}</td>
+                <td>{{ c.message }}</td>
+                <td>{{ c.created_at.strftime('%b %d, %Y') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <div class="section-head" style="margin-top:40px;"><h2>Financing requests</h2></div>
+    {% if not financing_apps %}
+    <p>No financing requests yet.</p>
+    {% else %}
+    <table class="admin-table">
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Vehicle interest</th><th>Income</th><th>Received</th></tr></thead>
+        <tbody>
+        {% for f in financing_apps %}
+            <tr>
+                <td>{{ f.full_name }}</td>
+                <td>{{ f.email }}</td>
+                <td>{{ f.phone }}</td>
+                <td>{{ f.vehicle_interest or '—' }}</td>
+                <td>{{ f.annual_income or '—' }}</td>
+                <td>{{ f.created_at.strftime('%b %d, %Y') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

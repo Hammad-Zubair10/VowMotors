@@ -1,0 +1,13 @@
+<a href="{{ url_for('main.vehicle_detail', vehicle_id=v.id) }}" class="vehicle-card">
+    {% if v.is_sold %}<div class="stamp-sold">Sold</div>{% endif %}
+    <div class="vehicle-card__photo">
+        {% if v.primary_photo %}
+        <img src="{{ url_for('static', filename='uploads/vehicles/' ~ v.primary_photo.filename) }}" alt="{{ v.title }}">
+        {% endif %}
+    </div>
+    <div class="vehicle-card__body">
+        <p class="vehicle-card__title">{{ v.title }}</p>
+        <p class="vehicle-card__meta">{{ '{:,}'.format(v.mileage or 0) }} km &middot; {{ v.exterior_color or 'Color N/A' }} &middot; {{ v.body_style }}</p>
+        <p class="vehicle-card__price">${{ '{:,.0f}'.format(v.price) }}</p>
+    </div>
+</a>

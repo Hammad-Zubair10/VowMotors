@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+*.db
+instance/
+venv/
+.venv/
+vowapp/static/uploads/vehicles/*
+!vowapp/static/uploads/vehicles/.gitkeep
+.claude

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Edit vehicle' if vehicle else 'Add vehicle' }} · {{ dealership_name }}{% endblock %}
+
+{% block content %}
+<div class="form-page form-wide">
+    <h1>{{ 'Edit vehicle' if vehicle else 'Add vehicle' }}</h1>
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="field-row">
+            <div class="field">
+                {{ form.year.label }}{{ form.year() }}
+                {% for e in form.year.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="field">{{ form.body_style.label }}{{ form.body_style() }}</div>
+        </div>
+        <div class="field-row">
+            <div class="field">
+                {{ form.make.label }}{{ form.make() }}
+                {% for e in form.make.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="field">
+                {{ form.model.label }}{{ form.model() }}
+                {% for e in form.model.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+            </div>
+        </div>
+        <div class="field-row">
+            <div class="field">{{ form.trim.label }}{{ form.trim() }}</div>
+            <div class="field">
+                {{ form.price.label }}{{ form.price() }}
+                {% for e in form.price.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+            </div>
+        </div>
+        <div class="field-row">
+            <div class="field">{{ form.mileage.label }}{{ form.mileage() }}</div>
+            <div class="field">{{ form.exterior_color.label }}{{ form.exterior_color() }}</div>
+        </div>
+        <div class="field-row">
+            <div class="field">{{ form.transmission.label }}{{ form.transmission() }}</div>
+            <div class="field">{{ form.fuel_type.label }}{{ form.fuel_type() }}</div>
+        </div>
+        <div class="field-row">
+            <div class="field">{{ form.vin.label }}{{ form.vin() }}</div>
+            <div class="field">{{ form.status.label }}{{ form.status() }}</div>
+        </div>
+        <div class="field">{{ form.description.label }}{{ form.description(rows=5) }}</div>
+        {% set photo_count = vehicle.photos.count() if vehicle else 0 %}
+        <div class="field">
+            {{ form.photos.label }}{{ form.photos() }}
+            <p class="field-hint">{{ photo_count }} / {{ config.MAX_PHOTOS_PER_VEHICLE }} photos used</p>
+            {% for e in form.photos.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+        </div>
+
+        {% if vehicle and vehicle.photos.count() %}
+        <div class="field">
+            <label>Current photos</label>
+            <div class="vehicle-gallery__thumbs">
+                {% for p in vehicle.photos %}
+                <div class="photo-thumb">
+                    <img src="{{ url_for('static', filename='uploads/vehicles/' ~ p.filename) }}" alt="">
+                    <form action="{{ url_for('dealer.photo_delete', vehicle_id=vehicle.id, photo_id=p.id) }}" method="post" onsubmit="return confirm('Remove this photo?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-danger photo-thumb__remove">Remove</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="btn-row">
+            <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+            <a href="{{ url_for('dealer.dashboard') }}" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Dealer Dashboard · {{ dealership_name }}{% endblock %}
+
+{% block content %}
+<div class="admin-shell">
+    <div class="admin-topbar">
+        <h1 class="wordmark">Inventory dashboard</h1>
+        <div class="btn-row">
+            <a href="{{ url_for('dealer.change_password') }}" class="btn btn-ghost">Change password</a>
+            <a href="{{ url_for('dealer.messages') }}" class="btn btn-ghost">Messages</a>
+            <a href="{{ url_for('dealer.vehicle_new') }}" class="btn btn-primary">+ Add vehicle</a>
+        </div>
+    </div>
+
+    <div class="stat-row">
+        <div class="stat-card"><span class="num">{{ stats.total }}</span><span class="label">Total vehicles</span></div>
+        <div class="stat-card"><span class="num">{{ stats.available }}</span><span class="label">Available</span></div>
+        <div class="stat-card"><span class="num">{{ stats.sold }}</span><span class="label">Sold</span></div>
+    </div>
+
+    {% if not vehicles %}
+    <p>No vehicles yet. <a href="{{ url_for('dealer.vehicle_new') }}">Add your first vehicle</a>.</p>
+    {% else %}
+    <table class="admin-table">
+        <thead>
+            <tr><th>Vehicle</th><th>Price</th><th>Mileage</th><th>Status</th><th>Added by</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for v in vehicles %}
+            <tr>
+                <td><a href="{{ url_for('main.vehicle_detail', vehicle_id=v.id) }}">{{ v.title }}</a></td>
+                <td>${{ '{:,.0f}'.format(v.price) }}</td>
+                <td>{{ '{:,}'.format(v.mileage or 0) }} km</td>
+                <td>
+                    {% if v.is_sold %}<span class="badge-sold">Sold</span>{% else %}<span class="badge-available">Available</span>{% endif %}
+                </td>
+                <td>{{ v.dealer.name }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('dealer.vehicle_edit', vehicle_id=v.id) }}" class="btn btn-ghost">Edit</a>
+                    <form action="{{ url_for('dealer.vehicle_delete', vehicle_id=v.id) }}" method="post" onsubmit="return confirm('Delete this vehicle? This cannot be undone.');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

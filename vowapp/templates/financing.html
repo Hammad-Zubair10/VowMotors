@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Financing · {{ dealership_name }}{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div>
+        <h1>Financing made simple.</h1>
+        <p>We work with a wide network of lenders to get you a competitive rate &mdash; whether your credit is excellent, average, or still building. Fill out the form and a finance specialist will follow up within one business day.</p>
+    </div>
+    <div class="hero-figure"></div>
+</div>
+
+<div class="split-layout">
+    <div>
+        <div class="info-card">
+            <h3>Every credit situation welcome</h3>
+            <p>New to credit, rebuilding, or self-employed &mdash; our lender network covers a wide range of approval profiles.</p>
+        </div>
+        <div class="info-card">
+            <h3>Trade-ins accepted</h3>
+            <p>Bring your current vehicle and we'll apply its value toward your down payment.</p>
+        </div>
+        <div class="info-card">
+            <h3>No obligation</h3>
+            <p>Submitting this form does not commit you to a purchase &mdash; it only starts the conversation.</p>
+        </div>
+    </div>
+    <div class="form-page">
+        <h1>Get pre-approved</h1>
+        <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="field">
+                {{ form.full_name.label }}
+                {{ form.full_name(placeholder="Jane Smith") }}
+                {% for e in form.full_name.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    {{ form.email.label }}
+                    {{ form.email(placeholder="jane@example.com") }}
+                    {% for e in form.email.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.phone.label }}
+                    {{ form.phone(placeholder="(555) 555-5555") }}
+                    {% for e in form.phone.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    {{ form.employment_status.label }}
+                    {{ form.employment_status() }}
+                </div>
+                <div class="field">
+                    {{ form.annual_income.label }}
+                    {{ form.annual_income(placeholder="$60,000") }}
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    {{ form.down_payment.label }}
+                    {{ form.down_payment(placeholder="$2,000") }}
+                </div>
+                <div class="field">
+                    {{ form.vehicle_interest.label }}
+                    {{ form.vehicle_interest(placeholder="2022 Honda Civic") }}
+                </div>
+            </div>
+            <div class="field">
+                {{ form.notes.label }}
+                {{ form.notes(rows=4) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit request</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

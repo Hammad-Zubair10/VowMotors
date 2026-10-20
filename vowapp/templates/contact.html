@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Contact · {{ dealership_name }}{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div>
+        <h1>Let's talk vehicles.</h1>
+        <p>Questions about a listing, a trade-in, or just want to swing by the lot? Send us a message and someone from our team will get back to you shortly.</p>
+    </div>
+    <div class="hero-figure"></div>
+</div>
+
+<div class="split-layout">
+    <div>
+        <div class="info-card">
+            <h3>Visit the lot</h3>
+            <p>Back Bay, 3908 97St NW Unit 5, T6E 6N2</p>
+        </div>
+        <div class="info-card">
+            <h3>Call or text</h3>
+            <p>(780) 908-7741</p>
+        </div>
+        <div class="info-card">
+            <h3>Hours</h3>
+            <p>By Appointment</p>
+        </div>
+    </div>
+    <div class="form-page">
+        <h1>Send a message</h1>
+        <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="field">
+                {{ form.name.label }}
+                {{ form.name(placeholder="Jane Smith") }}
+                {% for e in form.name.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    {{ form.email.label }}
+                    {{ form.email(placeholder="jane@example.com") }}
+                    {% for e in form.email.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+                </div>
+                <div class="field">
+                    {{ form.phone.label }}
+                    {{ form.phone(placeholder="(555) 555-5555") }}
+                    {% for e in form.phone.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+                </div>
+            </div>
+            <div class="field">
+                {{ form.subject.label }}
+                {{ form.subject(placeholder="Question about a 2022 Civic") }}
+            </div>
+            <div class="field">
+                {{ form.message.label }}
+                {{ form.message(rows=5) }}
+                {% for e in form.message.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Send message</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

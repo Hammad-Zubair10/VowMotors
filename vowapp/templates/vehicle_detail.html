@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}{{ vehicle.title }} · {{ dealership_name }}{% endblock %}
+
+{% block content %}
+{% set photos = vehicle.photos.all() %}
+<div class="vehicle-detail">
+    <div>
+        <div class="vehicle-gallery__main">
+            {% if photos %}
+            <img src="{{ url_for('static', filename='uploads/vehicles/' ~ photos[0].filename) }}" alt="{{ vehicle.title }}" id="galleryMainImg">
+            {% endif %}
+        </div>
+        {% if photos|length > 1 %}
+        <div class="vehicle-gallery__thumbs">
+            {% for p in photos %}
+            <img src="{{ url_for('static', filename='uploads/vehicles/' ~ p.filename) }}" alt="{{ vehicle.title }} photo {{ loop.index }}" data-full="{{ url_for('static', filename='uploads/vehicles/' ~ p.filename) }}">
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <div>
+        {% if vehicle.is_sold %}<span class="badge-sold">Sold</span>{% else %}<span class="badge-available">Available</span>{% endif %}
+        <h1>{{ vehicle.title }}</h1>
+        <p class="price">${{ '{:,.0f}'.format(vehicle.price) }}</p>
+        <table class="spec-table">
+            <tr><td>Mileage</td><td>{{ '{:,}'.format(vehicle.mileage or 0) }} km</td></tr>
+            <tr><td>Body style</td><td>{{ vehicle.body_style }}</td></tr>
+            <tr><td>Exterior color</td><td>{{ vehicle.exterior_color or '—' }}</td></tr>
+            <tr><td>Transmission</td><td>{{ vehicle.transmission or '—' }}</td></tr>
+            <tr><td>Fuel type</td><td>{{ vehicle.fuel_type or '—' }}</td></tr>
+            <tr><td>VIN</td><td>{{ vehicle.vin or '—' }}</td></tr>
+        </table>
+        {% if vehicle.description %}<p>{{ vehicle.description }}</p>{% endif %}
+        <div class="btn-row">
+            <a href="{{ url_for('main.contact') }}" class="btn btn-primary">Ask about this vehicle</a>
+            <a href="{{ url_for('main.financing') }}" class="btn btn-ghost">Get pre-approved</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

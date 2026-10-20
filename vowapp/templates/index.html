@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Home · {{ dealership_name }}{% endblock %}
+
+{% block precontent %}
+<div class="search-bar">
+    <form class="search-bar__inner" action="{{ url_for('main.inventory') }}" method="get">
+        <div class="search-bar__field">
+            <label for="searchBodyStyle">Type</label>
+            <select id="searchBodyStyle" name="body_style">
+                <option value="">Any</option>
+                <option value="Car">Car</option>
+                <option value="SUV">SUV</option>
+                <option value="Truck">Truck</option>
+                <option value="Commercial">Commercial</option>
+            </select>
+        </div>
+        <div class="search-bar__field">
+            <label for="searchMake">Make</label>
+            <select id="searchMake" name="make">
+                <option value="">Any</option>
+                {% for m in makes %}<option value="{{ m }}">{{ m }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="search-bar__field">
+            <label for="searchModel">Model</label>
+            <input type="text" id="searchModel" name="model" placeholder="e.g. Civic">
+        </div>
+        <div class="search-bar__field">
+            <label for="searchKeyword">Keyword</label>
+            <input type="text" id="searchKeyword" name="keyword" placeholder="Search inventory">
+        </div>
+        <button type="submit" class="btn btn-primary search-bar__go">Go</button>
+    </form>
+    <div class="scroll-cue">&darr;</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="banner">
+    <div class="banner__inner">
+        <p class="banner__overline">&#9733; Express Store</p>
+        <h1>Start your next purchase online.</h1>
+        <p>Transparent pricing, easy payment options, and every vehicle inspected before it's listed &mdash; no dealer markups added after the fact.</p>
+        <div class="btn-row">
+            <a href="{{ url_for('main.inventory') }}" class="btn btn-primary">Start shopping</a>
+        </div>
+    </div>
+</section>
+
+<section class="find-vehicle">
+    <h2>Find a vehicle</h2>
+    <p class="find-vehicle__subtitle">Select a body style to begin searching</p>
+    <div class="type-grid">
+        {% set type_images = {'Car': 'type-car.jpg', 'SUV': 'type-suv.jpg', 'Truck': 'type-truck.jpg', 'Commercial': 'type-commercial.jpg'} %}
+        {% for style, count in type_counts.items() %}
+        <a href="{{ url_for('main.inventory', body_style=style) }}" class="type-tile">
+            <div class="type-tile__photo">
+                {% if type_images.get(style) %}
+                <img src="{{ url_for('static', filename='images/' ~ type_images[style]) }}" alt="{{ style }}">
+                {% endif %}
+            </div>
+            <div class="type-tile__label">{{ style }}<span class="type-tile__count">{{ count }} available</span></div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="section-head">
+    <h2>Recently added</h2>
+    <a href="{{ url_for('main.inventory') }}">See full inventory &rarr;</a>
+</div>
+
+{% if not featured %}
+<div class="empty-state">
+    <p>New inventory is on its way &mdash; check back soon, or browse the <a href="{{ url_for('main.inventory') }}">full inventory page</a>.</p>
+</div>
+{% else %}
+<div class="inventory-grid">
+    {% for v in featured %}
+        {% include 'partials/vehicle_card.html' %}
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
