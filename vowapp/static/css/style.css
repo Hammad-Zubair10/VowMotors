@@ -702,6 +702,12 @@ img { max-width: 100%; display: block; }
   margin: 0;
   font-size: 0.95rem;
 }
+.info-card p a {
+  color: var(--blue);
+  font-weight: 500;
+  text-decoration: none;
+}
+.info-card p a:hover { text-decoration: underline; }
 
 /* ---------- Vehicle photo thumbnails (dealer edit form) ---------- */
 .photo-thumb {
