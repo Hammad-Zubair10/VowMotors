@@ -324,6 +324,9 @@ img { max-width: 100%; display: block; }
   background: var(--paper) url('/static/images/hero-placeholder.jpg') center/cover no-repeat;
   position: relative;
 }
+.hero-figure--contact {
+  background: var(--paper) url('/static/images/contact-hero.jpg') 25% center/cover no-repeat;
+}
 
 /* ---------- Buttons ---------- */
 .btn {
