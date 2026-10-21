@@ -9,5 +9,6 @@
         <p class="vehicle-card__title">{{ v.title }}</p>
         <p class="vehicle-card__meta">{{ '{:,}'.format(v.mileage or 0) }} km &middot; {{ v.exterior_color or 'Color N/A' }} &middot; {{ v.body_style }}</p>
         <p class="vehicle-card__price">${{ '{:,.0f}'.format(v.price) }}</p>
+        {% include 'partials/price_note.html' %}
     </div>
 </a>

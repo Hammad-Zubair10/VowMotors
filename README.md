@@ -102,9 +102,8 @@ vowmotors-flask/
 
 ## Notes
 
-- `static/images/banner-placeholder.jpg` isn't included. Drop a photo at that path
-  (referenced from `style.css`) for a home-page banner image, or leave it out;
-  the layout works fine without it.
+- The home-page banner is solid black. To use a photo, add a background image to
+  `.banner` in `style.css`.
 - SQLite and uploaded photos live on disk, so the host must keep its disk between
   restarts and deploys. Set `DATABASE_URL` to Postgres/MySQL if you move to a
   host without a persistent disk.

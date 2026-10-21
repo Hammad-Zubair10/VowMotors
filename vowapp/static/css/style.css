@@ -1,17 +1,23 @@
 /* ===================================================================
    Design tokens
-   Palette: bright white ground, true black ink, one restrained red
-   used only for the "sold" stamp and destructive actions.
+   Palette: red, blue and white (sampled from the logo), with black for the
+   header and footer. Blue = primary actions, red = highlights and the
+   hero call-to-action; "sold" stamps and delete buttons use a deeper red.
    Type: Fraunces (display serif, headlines) + Archivo (grotesque, UI/body)
    =================================================================== */
 :root {
   --white: #ffffff;
-  --paper: #f6f5f2;      /* subtle off-white for panels, not grey */
-  --ink: #000000;         /* true black, not a tinted near-black */
-  --ink-soft: #4a4a46;    /* secondary text */
-  --line: #000000;
-  --line-soft: #d8d6d0;
-  --stamp-red: #a3241c;
+  --paper: #f2f6fd;      /* very light blue tint for panels */
+  --ink: #000000;
+  --ink-soft: #4a5268;    /* secondary text */
+  --blue: #0143e2;
+  --blue-dark: #0132aa;
+  --navy: #071a52;
+  --red: #f90b2d;
+  --red-dark: #d00a26;
+  --line: #071a52;
+  --line-soft: #d5dcee;
+  --stamp-red: #d00a26;
 
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -46,20 +52,24 @@ img { max-width: 100%; display: block; }
 .wordmark--small { font-size: 1.1rem; margin: 0 0 4px; }
 
 .site-logo { display: block; line-height: 0; }
-.site-logo img { height: 56px; width: 56px; border-radius: 8px; }
+.site-logo img { height: 92px; width: auto; max-width: none; }
+@media (min-width: 1101px) {
+  .site-logo img { height: 54px; }
+}
 
 /* ---------- Header / nav ---------- */
 .site-header {
-  border-bottom: 1px solid var(--line);
+  border-bottom: 3px solid var(--red);
   position: sticky;
   top: 0;
-  background: var(--white);
+  background: var(--ink);
+  color: var(--white);
   z-index: 20;
 }
 .site-header__inner {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 18px 24px;
+  padding: 8px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -73,6 +83,7 @@ img { max-width: 100%; display: block; }
 }
 .site-nav a {
   text-decoration: none;
+  color: var(--white);
   font-weight: 500;
   font-size: 0.95rem;
   padding-bottom: 4px;
@@ -80,7 +91,7 @@ img { max-width: 100%; display: block; }
 }
 .site-nav a:hover,
 .site-nav a.is-active {
-  border-bottom-color: var(--ink);
+  border-bottom-color: var(--red);
 }
 .nav-toggle {
   display: none;
@@ -94,12 +105,12 @@ img { max-width: 100%; display: block; }
 .nav-toggle span {
   width: 24px;
   height: 2px;
-  background: var(--ink);
+  background: var(--white);
 }
 
 /* ---------- Quick-nav tab bar ---------- */
 .quick-nav {
-  background: var(--ink);
+  background: var(--blue);
 }
 .quick-nav__inner {
   max-width: var(--maxw);
@@ -118,12 +129,13 @@ img { max-width: 100%; display: block; }
   font-size: 0.8rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
 }
 .quick-nav__tab:last-child { border-right: none; }
+.quick-nav__tab:hover { background: var(--blue-dark); }
 .quick-nav__tab.is-active {
   background: var(--white);
-  color: var(--ink);
+  color: var(--blue);
 }
 
 /* ---------- Search bar (below quick-nav) ---------- */
@@ -179,13 +191,8 @@ img { max-width: 100%; display: block; }
   min-height: 420px;
   display: flex;
   align-items: center;
-  background: var(--ink) url('/static/images/banner-placeholder.jpg') center/cover no-repeat;
-}
-.banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.15) 100%);
+  background: linear-gradient(110deg, #000000 0%, var(--navy) 40%, var(--blue) 100%);
+  border-bottom: 6px solid var(--red);
 }
 .banner__inner {
   position: relative;
@@ -221,11 +228,11 @@ img { max-width: 100%; display: block; }
   color: rgba(255,255,255,0.85);
 }
 .banner .btn-primary {
-  background: var(--white);
-  color: var(--ink);
-  border-color: var(--white);
+  background: var(--red);
+  color: var(--white);
+  border-color: var(--red);
 }
-.banner .btn-primary:hover { background: var(--paper); }
+.banner .btn-primary:hover { background: var(--red-dark); border-color: var(--red-dark); }
 
 /* ---------- Find a vehicle (body-style tiles) ---------- */
 .find-vehicle {
@@ -239,6 +246,14 @@ img { max-width: 100%; display: block; }
   font-weight: 500;
   font-size: 2.2rem;
   margin: 0 0 8px;
+}
+.find-vehicle h2::after {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 4px;
+  background: var(--red);
+  margin: 12px auto 0;
 }
 .find-vehicle__subtitle {
   color: var(--ink-soft);
@@ -255,6 +270,7 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--line);
   display: block;
 }
+.type-tile:hover { border-color: var(--blue); box-shadow: 0 4px 0 var(--red); }
 .type-tile__photo {
   aspect-ratio: 4 / 3;
   background: var(--paper);
@@ -319,14 +335,14 @@ img { max-width: 100%; display: block; }
   font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--navy);
   cursor: pointer;
   background: var(--white);
-  color: var(--ink);
+  color: var(--navy);
 }
-.btn-primary { background: var(--ink); color: var(--white); }
-.btn-primary:hover { background: #1a1a1a; }
-.btn-ghost:hover { background: var(--paper); }
+.btn-primary { background: var(--blue); border-color: var(--blue); color: var(--white); }
+.btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+.btn-ghost:hover { background: var(--paper); border-color: var(--blue); color: var(--blue); }
 .btn-danger { border-color: var(--stamp-red); color: var(--stamp-red); }
 .btn-danger:hover { background: var(--stamp-red); color: var(--white); }
 .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -366,6 +382,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   flex-direction: column;
 }
+.vehicle-card:hover { border-color: var(--blue); box-shadow: 0 4px 0 var(--red); }
 .vehicle-card__photo {
   aspect-ratio: 4 / 3;
   background: var(--paper);
@@ -376,7 +393,15 @@ img { max-width: 100%; display: block; }
 .vehicle-card__body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
 .vehicle-card__title { font-weight: 600; font-size: 1.05rem; margin: 0 0 4px; }
 .vehicle-card__meta { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 12px; }
-.vehicle-card__price { font-family: var(--font-display); font-size: 1.4rem; margin-top: auto; }
+.vehicle-card__price { font-family: var(--font-display); font-size: 1.4rem; margin-top: auto; color: var(--blue); }
+
+.price-note {
+  margin: 8px 0 0;
+  font-size: 0.72rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
 
 .stamp-sold {
   position: absolute;
@@ -449,8 +474,10 @@ img { max-width: 100%; display: block; }
 .vehicle-detail .price {
   font-family: var(--font-display);
   font-size: 1.8rem;
-  margin: 0 0 24px;
+  margin: 0 0 8px;
+  color: var(--blue);
 }
+.vehicle-detail .price-note { margin-bottom: 24px; font-size: 0.8rem; }
 .spec-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
 .spec-table tr { border-bottom: 1px solid var(--line-soft); }
 .spec-table td { padding: 10px 0; font-size: 0.95rem; }
@@ -483,8 +510,19 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-body);
   font-size: 0.95rem;
   padding: 11px 12px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--navy);
   background: var(--white);
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus,
+.search-bar__field input:focus,
+.search-bar__field select:focus,
+.filter-bar input:focus,
+.filter-bar select:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 0;
+  border-color: var(--blue);
 }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .form-error {
@@ -495,7 +533,9 @@ img { max-width: 100%; display: block; }
   margin-bottom: 20px;
 }
 .form-success {
-  border: 1px solid var(--ink);
+  border: 1px solid var(--blue);
+  background: var(--paper);
+  color: var(--navy);
   padding: 12px 14px;
   font-size: 0.9rem;
   margin-bottom: 20px;
@@ -525,6 +565,7 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-display);
   font-size: 2.2rem;
   display: block;
+  color: var(--blue);
 }
 .stat-card .label {
   color: var(--ink-soft);
@@ -537,7 +578,7 @@ img { max-width: 100%; display: block; }
   border-bottom: 1px solid var(--line-soft);
   font-size: 0.92rem;
 }
-.admin-table th { font-weight: 600; border-bottom: 1px solid var(--ink); }
+.admin-table th { font-weight: 600; border-bottom: 2px solid var(--blue); }
 .admin-table .actions { display: flex; gap: 8px; }
 .admin-table .actions form { display: inline; }
 .badge-sold {
@@ -549,22 +590,36 @@ img { max-width: 100%; display: block; }
 
 /* ---------- Footer ---------- */
 .site-footer {
-  border-top: 1px solid var(--line);
+  background: var(--ink);
+  border-top: 3px solid var(--red);
   padding: 32px 24px 48px;
 }
 .site-footer__inner {
   max-width: var(--maxw);
   margin: 0 auto;
-  color: var(--ink-soft);
+  color: #b9c2dc;
   font-size: 0.85rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
 }
+.footer-amvic {
+  width: 150px;
+  height: auto;
+  flex-shrink: 0;
+  background: var(--white);
+  padding: 8px;
+}
+.site-footer .wordmark { color: var(--white); }
 .footer-admin-link {
   display: inline-block;
   margin-top: 10px;
-  color: var(--ink-soft);
+  color: #b9c2dc;
   text-decoration: underline;
   font-size: 0.8rem;
 }
+.footer-admin-link:hover { color: var(--white); }
 
 /* ===================================================================
    Additions for the Flask build: flash messages, badges, two-column
@@ -676,21 +731,23 @@ img { max-width: 100%; display: block; }
   .quick-nav__tab { min-width: 50%; border-bottom: 1px solid rgba(255,255,255,0.15); }
 }
 @media (max-width: 640px) {
+  .site-footer__inner { flex-direction: column; align-items: flex-start; }
+  .site-logo img { height: 68px; }
   .nav-toggle { display: flex; }
   .site-nav ul {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--white);
-    border-bottom: 1px solid var(--line);
+    background: var(--ink);
+    border-bottom: 3px solid var(--red);
     flex-direction: column;
     gap: 0;
     padding: 8px 24px 16px;
     display: none;
   }
   .site-nav ul.is-open { display: flex; }
-  .site-nav li { border-top: 1px solid var(--line-soft); }
+  .site-nav li { border-top: 1px solid rgba(255, 255, 255, 0.18); }
   .site-nav a { display: block; padding: 12px 0; }
   .stat-row { grid-template-columns: 1fr; }
 }

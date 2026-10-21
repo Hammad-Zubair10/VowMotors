@@ -14,7 +14,10 @@
     <header class="site-header">
         <div class="site-header__inner">
             <a href="{{ url_for('main.home') }}" class="site-logo">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="{{ dealership_name }}">
+                <picture>
+                    <source media="(max-width: 1100px)" srcset="{{ url_for('static', filename='images/logo-wide.png') }}">
+                    <img src="{{ url_for('static', filename='images/logo-horizontal.png') }}" alt="{{ dealership_name }}">
+                </picture>
             </a>
             <nav class="site-nav">
                 <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
@@ -60,15 +63,18 @@
 
     <footer class="site-footer">
         <div class="site-footer__inner">
-            <p class="wordmark wordmark--small">{{ dealership_name }}</p>
-            <p>&copy; {{ current_year }} {{ dealership_name }}. All vehicles subject to prior sale.</p>
-            {% if current_user.is_authenticated %}
-              <a href="{{ url_for('dealer.dashboard') }}" class="footer-admin-link">Dealer dashboard</a>
-              &middot;
-              <a href="{{ url_for('dealer.logout') }}" class="footer-admin-link">Log out</a>
-            {% else %}
-              <a href="{{ url_for('dealer.login') }}" class="footer-admin-link">Dealer login</a>
-            {% endif %}
+            <div class="site-footer__text">
+                <p class="wordmark wordmark--small">{{ dealership_name }}</p>
+                <p>&copy; {{ current_year }} {{ dealership_name }}. All vehicles subject to prior sale.</p>
+                {% if current_user.is_authenticated %}
+                  <a href="{{ url_for('dealer.dashboard') }}" class="footer-admin-link">Dealer dashboard</a>
+                  &middot;
+                  <a href="{{ url_for('dealer.logout') }}" class="footer-admin-link">Log out</a>
+                {% else %}
+                  <a href="{{ url_for('dealer.login') }}" class="footer-admin-link">Dealer login</a>
+                {% endif %}
+            </div>
+            <img class="footer-amvic" src="{{ url_for('static', filename='images/amvic-logo.png') }}" alt="AMVIC - Alberta Motor Vehicle Industry Council">
         </div>
     </footer>
 

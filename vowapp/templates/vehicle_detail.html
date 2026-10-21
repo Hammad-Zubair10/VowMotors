@@ -22,6 +22,7 @@
         {% if vehicle.is_sold %}<span class="badge-sold">Sold</span>{% else %}<span class="badge-available">Available</span>{% endif %}
         <h1>{{ vehicle.title }}</h1>
         <p class="price">${{ '{:,.0f}'.format(vehicle.price) }}</p>
+        {% include 'partials/price_note.html' %}
         <table class="spec-table">
             <tr><td>Mileage</td><td>{{ '{:,}'.format(vehicle.mileage or 0) }} km</td></tr>
             <tr><td>Body style</td><td>{{ vehicle.body_style }}</td></tr>
